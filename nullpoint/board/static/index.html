@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nullpoint</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><span class="dot"></span>Nullpoint</div>
+    <div class="chips">
+      <span class="chip" id="c-mode">connecting…</span>
+      <span class="chip" id="c-face">face</span>
+      <span class="chip warn" id="c-sim" hidden>simulated nystagmus</span>
+      <span class="chip" id="c-adapt">adapt</span>
+      <span class="chip" id="c-cal" hidden>setup</span>
+      <span class="chip" id="c-fps">fps</span>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="said" id="said"></div>
+    <div class="keys" id="keys"><kbd>←</kbd> <kbd>→</kbd> glance · <kbd>Space</kbd> blink · <kbd>H</kbd> help</div>
+
+    <div class="gstrip" id="gstrip" hidden>
+      <div class="lg"><span class="lg-plain">● ordinary smoothing</span><span class="lg-adapt">● Nullpoint</span><span id="gs-active"></span></div>
+      <canvas id="gcanvas" height="46"></canvas>
+    </div>
+
+    <div class="zone left" id="z-L"><div class="fill"></div><div><span class="arrow">‹</span><span class="lbl">look left</span></div></div>
+    <div class="zone right" id="z-R"><div class="fill"></div><div><span class="arrow">›</span><span class="lbl">look right</span></div></div>
+    <section class="focus" id="focus">
+      <span class="null" id="null-tag">steadiest gaze</span>
+      <div class="page" id="page">Core</div>
+      <div class="phrase" id="phrase">…</div>
+      <div class="hint">blink firmly to say it · close your eyes 2 s, then open, for help</div>
+    </section>
+    <div class="belief"><div><span id="b0"></span></div><div><span id="b1"></span></div><div><span id="b2"></span></div></div>
+
+    <div class="task-banner" id="task-banner" hidden><div class="tb-main" id="tb-main"></div><div class="tb-sub" id="tb-sub"></div></div>
+    <div class="pending" id="pending" hidden>Open your eyes to call for help</div>
+
+    <div class="setup" id="setup" hidden>
+      <div class="setup-card" id="setup-card">
+        <div class="page" id="sc-title">Quick setup · 10 seconds</div>
+        <h2 id="sc-head">Look at each dot until it moves on</h2>
+        <div id="sc-body"><p>This tunes the board to how you are sitting today. Nothing is recorded.</p></div>
+        <div class="selfview" id="sv" hidden><img id="sv-img" alt="Your camera image"><span id="sv-face"></span></div>
+        <p class="go" id="sc-go"><b>Blink firmly</b> or press <kbd>Space</kbd> to start · <kbd>Esc</kbd> to skip</p>
+      </div>
+      <div class="tdot" id="tdot">
+        <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-bg" cx="60" cy="60" r="52"/><circle class="ring" id="ring" cx="60" cy="60" r="52"/></svg>
+        <span class="core"></span>
+      </div>
+      <div class="nf-say" id="nf-say"></div>
+      <div class="nf-word" id="nf-word"></div>
+      <div class="setup-step" id="setup-step"></div>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+  </main>
+
+  <nav class="strip" id="strip"></nav>
+
+  <div class="alarm" id="alarm">
+    <h1>Help requested</h1>
+    <p>Blink firmly, or press <kbd>C</kbd>, to clear</p>
+  </div>
+
+  <div class="help" id="help" hidden>
+    <div class="help-card">
+      <h2>Using Nullpoint</h2>
+      <h3>With your eyes</h3>
+      <ul>
+        <li><b>Look left or right</b> past the card to move the highlight. Keep looking to keep moving (up to 4 steps), look back at the card to stop.</li>
+        <li><b>Blink firmly</b> to say the highlighted phrase. Normal blinks do nothing.</li>
+        <li><b>Close your eyes for 2 seconds, then open them</b> to call for help. A soft tone at 2 s means "open now". Longer closures are rest and never call anyone.</li>
+      </ul>
+      <h3>Keys</h3>
+      <ul class="keys-list">
+        <li><kbd>←</kbd> <kbd>→</kbd> move · <kbd>Space</kbd> select · <kbd>E</kbd> call for help · <kbd>C</kbd> clear the alarm · <kbd>R</kbd> say it again</li>
+        <li><kbd>K</kbd> 10-second setup · <kbd>N</kbd> find your null zone · <kbd>T</kbd> phrase test</li>
+        <li><kbd>S</kbd> simulated nystagmus (off, 5°, 10°, 15°) · <kbd>A</kbd> adaptation on/off · <kbd>D</kbd> show how the gaze is read</li>
+      </ul>
+      <h3>Caregiver</h3>
+      <p class="cg-info" id="cg-info">Start with <code>--lan</code> to open the caregiver view on a phone.</p>
+      <p class="go"><kbd>H</kbd> or <kbd>Esc</kbd> to close</p>
+    </div>
+  </div>
+
+  <script src="/static/board.js"></script>
+</body>
+</html>

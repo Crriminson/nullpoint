@@ -1,0 +1,46 @@
+# personal recordings: face video and landmarks never go in git
+data/
+*.mp4
+*.mov
+*.npz
+
+# models are downloaded, not committed
+models/*.task
+models/*.part
+
+# environments / caches
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# editors / OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# build metadata
+*.egg-info/
+
+# rendered demo video
+video_out/
+
+# local dev / editor config
+.claude/
+
+# demo film source (kept local)
+film-remotion/
+
+# submission material (kept local, submitted separately)
+docs/report/
+docs/Nullpoint_Report.pdf
+tools/build_report.py
+tools/capture_shots.py
+eval/plot_report_figure.py
+docs/img/result_holds.png
+docs/img/alarm.jpg
+docs/img/game.jpg
+docs/img/phrase_test.jpg

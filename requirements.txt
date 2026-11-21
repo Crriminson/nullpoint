@@ -1,0 +1,18 @@
+# Nullpoint - pinned, CPU-only. Python 3.12 (64-bit, Windows 11).
+# Versions are pinned deliberately: on this machine Windows Smart App Control blocks
+# some freshly released native wheels (numpy 2.5.x, scikit-learn 1.9.x were blocked;
+# the versions below were tested and load fine). Keep the venv OUTSIDE OneDrive.
+numpy==2.2.6
+scipy==1.18.1
+scikit-learn==1.6.1
+lightgbm==4.7.0
+mediapipe==1.2.3
+opencv-python==5.0.0.93
+matplotlib==3.11.2
+pyttsx3==2.99
+fastapi==0.163.1
+uvicorn==0.54.0
+websockets==17.4
+# PyTorch CPU wheel (small 1D-CNN / GRU models):
+#   pip install torch==2.15.0 --index-url https://download.pytorch.org/whl/cpu
+pytest==8.4.2

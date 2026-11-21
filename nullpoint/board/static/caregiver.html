@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nullpoint · Caregiver</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><span class="dot"></span>Nullpoint · caregiver</div>
+    <div class="chips"><span class="chip" id="conn">connecting…</span></div>
+  </header>
+  <div class="cg">
+    <div class="now">
+      <div class="lbl">Just said</div>
+      <div class="txt" id="now">—</div>
+      <button class="btn ghost" id="again">Repeat aloud on the board</button>
+    </div>
+    <div class="lbl" style="color:var(--ink-dim);font-size:13px;text-transform:uppercase;letter-spacing:.1em;margin:8px 4px">Earlier</div>
+    <ul id="hist"></ul>
+
+    <details class="edit" id="edit">
+      <summary>Edit phrases</summary>
+      <p class="hint">One phrase per line, up to 7 per page and 40 characters each. "More options" is added for you.</p>
+      <div id="pages"></div>
+      <button class="btn ghost" id="addpage" type="button">Add a page</button>
+      <div class="save-row">
+        <label>PIN <input id="pin" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="from the laptop"></label>
+        <button class="btn" id="save" type="button">Save phrases</button>
+        <button class="btn ghost" id="reset" type="button">Restore defaults</button>
+      </div>
+      <p class="status" id="status"></p>
+    </details>
+  </div>
+  <div class="alarm" id="alarm">
+    <h1>Help requested</h1>
+    <p>They closed their eyes for 2 seconds and opened them: the help signal.</p>
+    <button class="btn" id="ack">I'm here — acknowledge</button>
+  </div>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  let ws, ctx, alarmTimer = null, lastLen = 0;
+  function beep() {
+    try {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = 880; g.gain.value = 0.2; o.connect(g); g.connect(ctx.destination);
+      o.start(); o.stop(ctx.currentTime + 0.3);
+    } catch (e) {}
+  }
+  function render(m) {
+    const s = m.state;
+    $("conn").textContent = "connected"; $("conn").className = "chip on";
+    $("now").textContent = s.last_spoken || "—";
+    $("hist").innerHTML = s.history.slice().reverse().slice(1).map((h) => `<li>${esc(h)}</li>`).join("");
+    if (s.history.length !== lastLen && lastLen) beep();
+    lastLen = s.history.length;
+    $("alarm").classList.toggle("show", s.emergency);
+    if (s.emergency && !alarmTimer) { beep(); alarmTimer = setInterval(beep, 900); if (navigator.vibrate) navigator.vibrate([400, 200, 400]); }
+    if (!s.emergency && alarmTimer) { clearInterval(alarmTimer); alarmTimer = null; }
+  }
+  function connect() {
+    ws = new WebSocket(`ws://${location.host}/ws`);
+    ws.onmessage = (e) => render(JSON.parse(e.data));
+    ws.onclose = () => { $("conn").textContent = "reconnecting…"; $("conn").className = "chip warn"; setTimeout(connect, 1000); };
+  }
+  const send = (cmd) => ws && ws.readyState === 1 && ws.send(JSON.stringify({ cmd }));
+  $("ack").onclick = () => send("clear");
+
+  // ---- phrase editor
+  function pageBlock(name, phrases) {
+    const d = document.createElement("div"); d.className = "pg";
+    d.innerHTML = `<div class="pg-head"><input class="pg-name" maxlength="20" value="${esc(name)}">` +
+      `<button class="btn ghost small" type="button">Remove</button></div>` +
+      `<textarea rows="7">${esc(phrases.join("\n"))}</textarea>`;
+    d.querySelector("button").onclick = () => d.remove();
+    $("pages").appendChild(d);
+  }
+  async function loadPhrases() {
+    const r = await fetch("/phrases"); const j = await r.json();
+    $("pages").innerHTML = ""; j.pages.forEach(([n, p]) => pageBlock(n, p));
+  }
+  async function post(body) {
+    $("status").textContent = "saving…";
+    const r = await fetch("/phrases", { method: "POST", headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ pin: $("pin").value, ...body }) });
+    const j = await r.json();
+    $("status").textContent = j.ok ? "Saved. The board shows the new phrases now." : ("Not saved: " + j.error);
+    $("status").className = "status " + (j.ok ? "ok" : "bad");
+    if (j.ok) { $("pages").innerHTML = ""; j.pages.forEach(([n, p]) => pageBlock(n, p)); }
+  }
+  $("edit").addEventListener("toggle", () => { if ($("edit").open) loadPhrases(); });
+  $("addpage").onclick = () => pageBlock("New page", []);
+  $("save").onclick = () => post({ pages: [...document.querySelectorAll(".pg")].map((d) =>
+    [d.querySelector(".pg-name").value, d.querySelector("textarea").value.split("\n")]) });
+  $("reset").onclick = () => { if (confirm("Replace all phrases with the defaults?")) post({ reset: true }); };
+  $("again").onclick = () => send("speak_again");
+  document.body.addEventListener("click", () => { try { ctx = ctx || new AudioContext(); ctx.resume(); } catch (e) {} }, { once: true });
+  if (new URLSearchParams(location.search).has("edit")) { $("edit").open = true; loadPhrases(); }
+  connect();
+})();
+</script>
+</body>
+</html>

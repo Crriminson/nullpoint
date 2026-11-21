@@ -1,0 +1,365 @@
+{
+ "scans": [
+  "scan_A.npz",
+  "scan_B.npz"
+ ],
+ "freqs_hz": [
+  2,
+  3,
+  4
+ ],
+ "results": {
+  "wide_jerk_r_plain": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6448643999930934,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5198543249939876,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5427144666638921,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5485685083336039,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5485685083336039,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5782291583241504,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.662269724991832,
+    "amp": 15
+   }
+  ],
+  "wide_jerk_r_adapt": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6494283666620805,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6427000583236802,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.692973033324233,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6490465083266218,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6420212333255523,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7519174666599912,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7625137416645882,
+    "amp": 15
+   }
+  ],
+  "wide_pendular_plain": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6448643999930934,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5964896249914694,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.524121433329613,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.524121433329613,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5372451333270871,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5557589916599679,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5672250666616793,
+    "amp": 15
+   }
+  ],
+  "wide_pendular_adapt": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6494283666620805,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5796652333306457,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5961980833313038,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7001615750031,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5877954000005651,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5400706750010914,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6393120249975858,
+    "amp": 15
+   }
+  ],
+  "narrow_jerk_r_plain": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6033627499884453,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6033627499884453,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6142288249859114,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6180119166461123,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6699163583087883,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7509006499729965,
+    "amp": 12
+   },
+   {
+    "hold_acc": 0.5833333333333334,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.5701262499768435,
+    "amp": 15
+   }
+  ],
+  "narrow_jerk_r_adapt": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.8098966166512879,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 1.8086209381980127,
+    "latency_s": 0.8174973166489501,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 1.8086209381980127,
+    "latency_s": 0.8067658916484403,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 1.8086209381980127,
+    "latency_s": 0.8028884166444179,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 1.8086209381980127,
+    "latency_s": 0.8065992416455016,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.9043104690990064,
+    "latency_s": 0.7993111749800536,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.9043104690990064,
+    "latency_s": 0.7911040749827704,
+    "amp": 15
+   }
+  ],
+  "narrow_pendular_plain": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6033627499884453,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6033627499884453,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6033627499884453,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6069847749876006,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6070653083181234,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.6648381166480242,
+    "amp": 12
+   },
+   {
+    "hold_acc": 0.8333333333333334,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7029555833122375,
+    "amp": 15
+   }
+  ],
+  "narrow_pendular_adapt": [
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.8098966166512879,
+    "amp": 0
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7986491416503357,
+    "amp": 2
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7806988833113179,
+    "amp": 4
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7734871666451598,
+    "amp": 6
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7734871666451598,
+    "amp": 8
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7653973833104821,
+    "amp": 12
+   },
+   {
+    "hold_acc": 1.0,
+    "wrong_per_min": 0.0,
+    "latency_s": 0.7653973833104821,
+    "amp": 15
+   }
+  ]
+ }
+}

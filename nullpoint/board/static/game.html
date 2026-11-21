@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nullpoint · Follow the light</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .gm { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 18px 26px; gap: 16px; min-height: 0; }
+    .lamps { position: relative; width: 100%; flex: 1; min-height: 220px; }
+    .lamp { position: absolute; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+            background: var(--panel); border: 3px solid var(--line); transition: background .15s, box-shadow .15s; }
+    .lamp.lit { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 60px rgba(242,181,68,.45); }
+    .lamp.seen { border-color: var(--calm); box-shadow: 0 0 0 8px rgba(79,179,165,.25); }
+    .lamp.lit.seen { box-shadow: 0 0 0 8px rgba(79,179,165,.5), 0 0 60px rgba(242,181,68,.45); }
+    .hud { display: flex; gap: 28px; align-items: baseline; font-size: 18px; color: var(--ink-dim); }
+    .hud b { color: var(--ink); font-size: 34px; }
+    .msg { font-size: 20px; text-align: center; min-height: 28px; }
+    .gm canvas { width: 100%; height: 46px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); }
+    .gm .lg { width: 100%; display: flex; gap: 16px; font-size: 12px; color: var(--ink-dim); }
+    table.hist { border-collapse: collapse; font-size: 15px; }
+    table.hist th { color: var(--ink-dim); font-weight: 500; padding: 4px 12px; font-size: 13px; }
+    table.hist td { padding: 4px 12px; border-top: 1px solid var(--line); text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div class="brand"><span class="dot"></span>Nullpoint · Follow the light</div>
+    <div class="chips">
+      <span class="chip" id="c-face">face</span>
+      <span class="chip warn" id="c-sim" hidden>sim</span>
+      <span class="chip" id="c-adapt">adapt</span>
+      <a class="chip" href="/" style="text-decoration:none">back to the board</a>
+    </div>
+  </header>
+  <main class="gm">
+    <div class="hud"><span>score <b id="score">–</b></span><span>time <b id="time">30</b></span>
+      <span>false jumps <b id="jumps">0</b></span></div>
+    <div class="msg" id="msg">Look at the lit circle and hold your gaze there. <kbd>Space</kbd> starts a 30-second round.</div>
+    <div class="lamps"><div class="lamp" id="L" style="left:17%"></div><div class="lamp" id="C" style="left:50%"></div>
+      <div class="lamp" id="R" style="left:83%"></div></div>
+    <div class="lg"><span style="color:#9aa6b2">● ordinary smoothing</span><span style="color:var(--accent)">● Nullpoint</span>
+      <span style="margin-left:auto">teal ring = where the board thinks you are looking</span></div>
+    <canvas id="cv" height="46"></canvas>
+    <table class="hist" id="hist"><tr><th>round</th><th>simulated nystagmus</th><th>adaptation</th><th>on target</th><th>false jumps</th></tr></table>
+    <div class="msg" style="font-size:14px;color:var(--ink-dim)"><kbd>S</kbd> simulated nystagmus (off/5/10/15°) · <kbd>A</kbd> adaptation on/off · <kbd>Space</kbd> new round · <kbd>Esc</kbd> back</div>
+  </main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const ROUND_S = 30, SWITCH_S = 2.5, GRACE_S = 0.5;
+  let ws, st = null, round = null, n = 0, audio;
+  const trail = { plain: [], adapt: [] };
+  function tick(f = 660, d = 0.06) {
+    try { audio = audio || new AudioContext(); const o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = f; g.gain.value = 0.06; o.connect(g); g.connect(audio.destination); o.start();
+      g.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + d); o.stop(audio.currentTime + d); } catch (e) {}
+  }
+  const send = (cmd) => ws && ws.readyState === 1 && ws.send(JSON.stringify({ cmd }));
+  function connect() {
+    ws = new WebSocket(`ws://${location.host}/ws`);
+    ws.onopen = () => send("quiet_on");                     // the board won't step or speak while you play
+    ws.onmessage = (e) => frame(JSON.parse(e.data));
+    ws.onclose = () => setTimeout(connect, 1000);
+  }
+  function newTarget(prev) { const z = ["L", "C", "R"].filter((x) => x !== prev); return z[Math.floor(Math.random() * z.length)]; }
+  function start() {
+    if (!st || !st.state.face) { $("msg").textContent = "No face in view: sit in front of the camera first."; return; }
+    const t = performance.now() / 1000;
+    round = { t0: t, tTarget: t, target: newTarget(null), on: 0, total: 0, jumps: 0, lastZone: "C",
+              sim: st.state.sim ? st.state.sim.amp + "°" : "off", adapt: st.state.adapt ? "on" : "off" };
+    $("msg").textContent = "Follow the light."; tick(880, 0.1);
+  }
+  function frame(m) {
+    st = m; const s = m.state;
+    $("c-face").textContent = s.face ? "face tracked" : "no face"; $("c-face").className = "chip " + (s.face ? "on" : "warn");
+    $("c-sim").hidden = !s.sim; if (s.sim) $("c-sim").textContent = `simulated nystagmus · ${s.sim.amp}°`;
+    $("c-adapt").textContent = s.adapt ? "adaptation on" : "adaptation off"; $("c-adapt").className = "chip " + (s.adapt ? "on" : "");
+    ["L", "C", "R"].forEach((z) => $(z).classList.toggle("seen", s.zone === z));
+    drawStrip(s);
+    if (!round) return;
+    const t = performance.now() / 1000, el = t - round.t0;
+    if (el >= ROUND_S) return finish();
+    if (t - round.tTarget >= SWITCH_S) { round.target = newTarget(round.target); round.tTarget = t; tick(620, 0.05); }
+    ["L", "C", "R"].forEach((z) => $(z).classList.toggle("lit", z === round.target));
+    if (t - round.tTarget >= GRACE_S) {                     // give the eyes time to get there
+      round.total++; if (s.zone === round.target) round.on++;
+      if (s.zone !== round.lastZone && s.zone !== round.target) round.jumps++;   // jumped somewhere you weren't asked
+    }
+    round.lastZone = s.zone;
+    $("time").textContent = Math.ceil(ROUND_S - el);
+    $("score").textContent = round.total ? Math.round(100 * round.on / round.total) + "%" : "–";
+    $("jumps").textContent = round.jumps;
+  }
+  function finish() {
+    const r = round; round = null; n++;
+    ["L", "C", "R"].forEach((z) => $(z).classList.remove("lit"));
+    const pct = r.total ? Math.round(100 * r.on / r.total) : 0;
+    $("hist").insertAdjacentHTML("beforeend", `<tr><td>${n}</td><td>${r.sim}</td><td>${r.adapt}</td><td>${pct}%</td><td>${r.jumps}</td></tr>`);
+    $("msg").textContent = `Round over: ${pct}% on target, ${r.jumps} false jumps. Change S / A and press Space to compare.`;
+    tick(990, 0.2);
+  }
+  function drawStrip(s) {
+    const cv = $("cv"); if (!s.strip) return;
+    trail.plain.push(s.strip.plain); trail.adapt.push(s.strip.adapt);
+    for (const k in trail) if (trail[k].length > 24) trail[k].shift();
+    const dpr = devicePixelRatio || 1, W = cv.clientWidth, H = 46;
+    if (cv.width !== Math.round(W * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, W, H);
+    c.strokeStyle = "rgba(154,166,178,.35)"; c.setLineDash([4, 4]);
+    for (const b of s.strip.bounds) { c.beginPath(); c.moveTo(b * W, 0); c.lineTo(b * W, H); c.stroke(); }
+    c.setLineDash([]);
+    const row = (a, y, rgb) => { a.forEach((x, i) => { c.fillStyle = `rgba(${rgb},${0.08 + 0.5 * i / a.length})`;
+      c.beginPath(); c.arc(x * W, y, 3, 0, 7); c.fill(); });
+      c.fillStyle = `rgb(${rgb})`; c.beginPath(); c.arc(a[a.length - 1] * W, y, 7, 0, 7); c.fill(); };
+    row(trail.plain, 15, "154,166,178"); row(trail.adapt, 32, "242,181,68");
+  }
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    if (k === " ") { e.preventDefault(); start(); }
+    else if (k === "s") send("sim");
+    else if (k === "a") send("adapt");
+    else if (k === "escape") { send("quiet_off"); location.href = "/"; }
+  });
+  addEventListener("beforeunload", () => send("quiet_off"));
+  if (new URLSearchParams(location.search).has("autostart")) setTimeout(start, 1500);
+  connect();
+})();
+</script>
+</body>
+</html>

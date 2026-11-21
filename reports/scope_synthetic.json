@@ -1,0 +1,38 @@
+{
+ "240fps_noise0.2": {
+  "n": 300,
+  "freq_autocorr_within_10pct": 1.0,
+  "freq_autocorr_median_abs_err_hz": 0.05644179769826074,
+  "freq_welch_within_10pct": 0.9966666666666667,
+  "amp_median_rel_err": 0.05135345050316578,
+  "amp_median_rel_err_amp_gt_1deg": 0.039746472397853165,
+  "fast_dir_acc_jerk": 0.97,
+  "waveform_heuristic_acc": 0.9766666666666667,
+  "jerk_gaze_err_mean_deg": 0.7256629897938536,
+  "jerk_gaze_err_foveation_deg": 0.17807677004086786
+ },
+ "120fps_noise0.3": {
+  "n": 300,
+  "freq_autocorr_within_10pct": 0.9966666666666667,
+  "freq_autocorr_median_abs_err_hz": 0.05943091282845525,
+  "freq_welch_within_10pct": 0.99,
+  "amp_median_rel_err": 0.0801981671359166,
+  "amp_median_rel_err_amp_gt_1deg": 0.05719611598906985,
+  "fast_dir_acc_jerk": 0.735,
+  "waveform_heuristic_acc": 0.8233333333333334,
+  "jerk_gaze_err_mean_deg": 0.7277978573770028,
+  "jerk_gaze_err_foveation_deg": 0.18294686753293074
+ },
+ "30fps_noise0.8": {
+  "n": 300,
+  "freq_autocorr_within_10pct": 0.8433333333333334,
+  "freq_autocorr_median_abs_err_hz": 0.08970149464326127,
+  "freq_welch_within_10pct": 0.9166666666666666,
+  "amp_median_rel_err": 0.41115101298396817,
+  "amp_median_rel_err_amp_gt_1deg": 0.26898603940013416,
+  "fast_dir_acc_jerk": 0.035,
+  "waveform_heuristic_acc": 0.23333333333333334,
+  "jerk_gaze_err_mean_deg": 0.942909113481095,
+  "jerk_gaze_err_foveation_deg": 0.4136756132813719
+ }
+}

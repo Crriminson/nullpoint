@@ -1,0 +1,50 @@
+{
+ "raw": {
+  "pendular": 2.299,
+  "lag": 0.004,
+  "jerk_r": 3.2,
+  "all": 2.749
+ },
+ "one-euro (baseline)": {
+  "pendular": 0.981,
+  "lag": 0.08,
+  "jerk_r": 2.326,
+  "all": 1.653
+ },
+ "moving mean 0.33 s (baseline)": {
+  "pendular": 0.628,
+  "lag": 0.19,
+  "jerk_r": 2.094,
+  "all": 1.361
+ },
+ "period-locked mean": {
+  "pendular": 0.316,
+  "lag": 0.204,
+  "jerk_r": 2.028,
+  "all": 1.172
+ },
+ "foveation-weighted mean": {
+  "pendular": 0.422,
+  "lag": 0.21,
+  "jerk_r": 1.65,
+  "all": 1.036
+ },
+ "foveation-weighted, one period (Nullpoint)": {
+  "pendular": 0.422,
+  "lag": 0.21,
+  "jerk_r": 1.65,
+  "all": 1.036
+ },
+ "foveation then period mean (series, v1)": {
+  "pendular": 0.326,
+  "lag": 0.377,
+  "jerk_r": 1.617,
+  "all": 0.972
+ },
+ "FLC + Nullpoint": {
+  "pendular": 0.448,
+  "lag": 0.2,
+  "jerk_r": 1.866,
+  "all": 1.157
+ }
+}
